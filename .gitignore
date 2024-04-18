@@ -1,0 +1,10 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/config/firebase/rush-loco-firebase-adminsdk-woowm-bebaae6d4a.json
+
+# /home/rafael/Escritorio/Backend-Rush/src/config/firebase/firebase.ts
+src/config/firebase/firebase.ts
+
+mysql

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql-user # Cambia 'mysql-user' por la contraseña que desees
+      MYSQL_DATABASE: rush
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql

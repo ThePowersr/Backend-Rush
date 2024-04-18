@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  uid             String
+  name            String
+  email           String   @unique
+  email_validated Boolean
+  img             String?
+  cedula          String
+  createdAt       DateTime @default(now())
+}
+
+model Category {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  image              String
+  available          Boolean
+  categories_vendors categories_vendors[]
+}
+
+model Vendors {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  image              String
+  has_delivery       Boolean
+  time               String
+  longitude          Float
+  latitude           Float
+  created_at         DateTime             @default(now())
+  is_active          Boolean
+  categories_vendors categories_vendors[]
+  product_category   product_category[]
+  products           products[]
+}
+
+model categories_vendors {
+  id            Int      @id @default(autoincrement())
+  category      Category @relation(fields: [categories_id], references: [id])
+  categories_id Int
+  vendors       Vendors  @relation(fields: [vendors_id], references: [id])
+  vendors_id    Int
+}
+
+model product_category {
+  id                     Int                      @id @default(autoincrement())
+  name                   String
+  image                  String
+  available              Boolean
+  Vendors                Vendors                  @relation(fields: [vendor_id], references: [id])
+  vendor_id              Int
+  products_by_categories products_by_categories[]
+}
+
+model products {
+  id                     Int                      @id @default(autoincrement())
+  name                   String
+  available              Boolean
+  price                  Float
+  description            String
+  products_by_categories products_by_categories[]
+  vendor_id              Int
+  vendors                Vendors                  @relation(fields: [vendor_id], references: [id])
+}
+
+model products_by_categories {
+  id            Int              @id @default(autoincrement())
+  product_name  String
+  productId     products         @relation(fields: [product_id], references: [id])
+  product_id    Int
+  category_name String
+  categoryId    product_category @relation(fields: [category_id], references: [id])
+  category_id   Int
+}
