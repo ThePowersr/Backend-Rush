@@ -6,7 +6,7 @@ export class RegisterUserDto {
   constructor(
     public readonly name: string,
     public readonly email: string,
-    public readonly password: string,
+    //public readonly password: string,
     public readonly cedula: string,
     public readonly uid: string,
   ) { }
@@ -17,13 +17,13 @@ export class RegisterUserDto {
     if (!name) return ['Missing name'];
     if (!email) return ['Missing email'];
     if (!regularExps.email.test(email)) return ['Email is not valid'];
-    if (!password) return ['Missing password'];
-    if (password.length < 6) return ['Password too short'];
+    //if (!password) return ['Missing password'];
+    //if (password.length < 6) return ['Password too short'];
 
     const [isValidCedula, cedulaMessage] = CedulaValidator.validate(cedula);
     if (!isValidCedula) { return [cedulaMessage] }
 
-    return [undefined, new RegisterUserDto(name, email, password, cedula, uid)];
+    return [undefined, new RegisterUserDto(name, email, cedula, uid)];
   }
 
 }

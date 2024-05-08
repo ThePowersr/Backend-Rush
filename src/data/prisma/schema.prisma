@@ -45,6 +45,7 @@ model Vendors {
   categories_vendors categories_vendors[]
   product_category   product_category[]
   products           products[]
+  orders             orders[]
 }
 
 model categories_vendors {
@@ -84,4 +85,35 @@ model products_by_categories {
   category_name String
   categoryId    product_category @relation(fields: [category_id], references: [id])
   category_id   Int
+}
+
+model orders {
+  id            Int             @id @default(autoincrement())
+  uid           String
+  payload_order Json
+  created_at    DateTime        @default(now())
+  vendor_id     Int
+  vendors       Vendors         @relation(fields: [vendor_id], references: [id])
+  channel       Channel
+  amount        Float
+  order_history order_history[]
+}
+
+model order_history {
+  id       Int    @id @default(autoincrement())
+  uid      String
+  order_id Int
+  orders   orders @relation(fields: [order_id], references: [id])
+  status   Status
+}
+
+enum Channel {
+  PICKUP
+  DELVERY
+}
+
+enum Status {
+  Anulado
+  Inicio
+  Entregado
 }
